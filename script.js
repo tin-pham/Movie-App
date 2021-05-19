@@ -4,11 +4,10 @@ const API_URL = BASE_URL + 'search/anime?q=&status=airing&order_by=score';
 
 const main = document.querySelector('main');
 
-function getAnime() {
-  fetch(API_URL)
+function getAnime(URL) {
+  fetch(URL)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.results);
       showAnime(data.results);
     })
     .catch((error) => console.log('Some thing went wrong: ' + error));
@@ -40,15 +39,43 @@ function showAnime(animeList) {
           <p>${anime.synopsis}</p>
         </div>
     `;
-    console.log(card);
     main.appendChild(card);
   });
 }
 
 function getRatingClass(score) {
   if (score >= 8) return 'green';
-  else if (score >= 6.5 && score < 8) return 'yellow';
-  else return 'red';
+  if (score >= 6.5 && score < 8) return 'yellow';
+  if (score >= 5 && score < 6.5) return 'orange';
+  return 'red';
 }
 
-getAnime();
+getAnime(API_URL);
+
+// Search Event
+const form = document.querySelector('form');
+const input = document.querySelector('input');
+// search.addEventListener('keypress', (e) => {
+//   if (e.key === 'Enter') {
+//     const searchValue = search.value;
+//     console.log(searchValue);
+
+//     const SEARCH_URL = BASE_URL + `search/anime/?q="${searchValue}"`;
+//     getAnime(SEARCH_URL);
+//   }
+// });
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const searchValue = input.value;
+  input.value = '';
+  console.log(searchValue);
+
+  const SEARCH_URL = BASE_URL + `search/anime?q=${searchValue}`;
+  console.log(SEARCH_URL);
+
+  if (searchValue) {
+    getAnime(SEARCH_URL);
+  }
+});

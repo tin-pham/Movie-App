@@ -34,8 +34,12 @@ header input {
   padding: 1em;
   border: none;
   outline: none;
-  background: #22007c;
+  background: #023e8a;
   border-radius: 20px;
+}
+
+header input:focus {
+  background: #0077b6;
 }
 
 a {
